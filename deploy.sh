@@ -106,7 +106,7 @@ if [[ "$IN_PLACE_DEPLOYMENT" -ne "1" ]]; then
   exitWithMessageOnError "Kudu Sync failed"
 fi
 
-sudo apt-get --assume-yes install youtube-dl
+apt-get --assume-yes install youtube-dl
 
 # 2. Select node version
 selectNodeVersion
