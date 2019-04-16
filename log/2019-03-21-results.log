@@ -1,0 +1,25 @@
+2019-03-21 17:53:21 info: start downloading https://www.youtube.com/watch?v=6JXe4pTMk-U
+With command youtube-dl -o "download/U2FsdGVkX1xjMhQ9b6XY7QO8pz0Wz8Lv1RYGx3lhwCg=END%(title)s.%(ext)s" -x --audio-format mp3 --audio-quality 0 "https://www.youtube.com/watch?v=6JXe4pTMk-U"
+2019-03-21 19:44:08 info: start downloading http://onepiece-tube.com/opening1
+With command youtube-dl -o "download/U2FsdGVkX1x9Tqs0bdNCRrvGobzjJxyXxIhhux12va8=END%(title)s.%(ext)s" -x --audio-format mp3 --audio-quality 0 "http://onepiece-tube.com/opening1"
+2019-03-21 19:44:10 error: Command failed: youtube-dl -o "download/U2FsdGVkX1x9Tqs0bdNCRrvGobzjJxyXxIhhux12va8=END%(title)s.%(ext)s" -x --audio-format mp3 --audio-quality 0 "http://onepiece-tube.com/opening1"
+WARNING: Falling back on generic information extractor.
+ERROR: Unsupported URL: http://onepiece-tube.com/opening1
+
+2019-03-21 19:46:09 info: start downloading http://onepiece-tube.com/opening1
+With command youtube-dl -o "download/U2FsdGVkX19LgWsNMcom4k7K6G3ZQjoAHFUnPq0CQqE=END%(title)s.%(ext)s" -x --audio-format mp3 --audio-quality 0 "http://onepiece-tube.com/opening1"
+2019-03-21 19:46:10 error: Command failed: youtube-dl -o "download/U2FsdGVkX19LgWsNMcom4k7K6G3ZQjoAHFUnPq0CQqE=END%(title)s.%(ext)s" -x --audio-format mp3 --audio-quality 0 "http://onepiece-tube.com/opening1"
+WARNING: Falling back on generic information extractor.
+ERROR: Unsupported URL: http://onepiece-tube.com/opening1
+
+2019-03-21 19:47:48 info: start downloading https://www.arte.tv/de/videos/080944-005-A/im-lauf-der-zeit/
+With command youtube-dl -o "download/U2FsdGVkX19jco7xLl0PmqkpAx2j7rZym2k972CXDgs=END%(title)s.%(ext)s" -x --audio-format mp3 --audio-quality 0 "https://www.arte.tv/de/videos/080944-005-A/im-lauf-der-zeit/"
+2019-03-21 20:19:30 info: start downloading https://www.youtube.com/watch?v=IEpj765QuXY
+With command youtube-dl -o "download/U2FsdGVkX1xX698bWIOM3vuF70xxrXOc2WunIPW56F0=END%(title)s.%(ext)s" -x --audio-format mp3 --audio-quality 0 "https://www.youtube.com/watch?v=IEpj765QuXY"
+2019-03-21 20:19:31 info: start downloading https://www.youtube.com/watch?v=IEpj765QuXY
+With command youtube-dl -o "download/U2FsdGVkX18vZHWQ0DsUvYJmmjgRKr9ZtrUu6vMKugg=END%(title)s.%(ext)s" -x --audio-format mp3 --audio-quality 0 "https://www.youtube.com/watch?v=IEpj765QuXY"
+2019-03-21 20:19:33 error: Command failed: youtube-dl -o "download/U2FsdGVkX1xX698bWIOM3vuF70xxrXOc2WunIPW56F0=END%(title)s.%(ext)s" -x --audio-format mp3 --audio-quality 0 "https://www.youtube.com/watch?v=IEpj765QuXY"
+ERROR: unable to download video data: HTTP Error 403: Forbidden
+
+2019-03-21 20:19:41 error: No Session ID! 
+ Given ID: undefined

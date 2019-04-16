@@ -1,0 +1,66 @@
+2019-03-28 14:07:29 info: start downloading https://www.youtube.com/watch?v=YDgC8DkHH6M
+With command youtube-dl -o "download/U2FsdGVkX1xTgGVDl1pChhag9NbLpU7BGX5s7OsAyW0=END%(title)s.%(ext)s" -x --audio-format mp3 --audio-quality 0 "https://www.youtube.com/watch?v=YDgC8DkHH6M"
+2019-03-28 14:08:13 error: gFilename is not defined
+2019-03-28 14:37:50 info: start downloading https://www.youtube.com/watch?v=YDgC8DkHH6M
+With command youtube-dl -o "download/U2FsdGVkX1xPyLMjrY2J9D80Mx5bIgsqhwQuZGcKbwA=END%(title)s.%(ext)s" -x --audio-format mp3 --audio-quality 0 "https://www.youtube.com/watch?v=YDgC8DkHH6M"
+2019-03-28 14:37:54 error: gFilename is not defined
+2019-03-28 14:38:32 info: start downloading https://www.youtube.com/watch?v=YDgC8DkHH6M
+With command youtube-dl -o "download/U2FsdGVkX19AenChRKjXriAKx0R4qLQEUv11Q02XEdk=END%(title)s.%(ext)s" -x --audio-format mp3 --audio-quality 0 "https://www.youtube.com/watch?v=YDgC8DkHH6M"
+2019-03-28 14:39:10 error: gFilename is not defined
+2019-03-28 14:39:29 info: start downloading https://www.youtube.com/watch?v=YDgC8DkHH6M
+With command youtube-dl -o "download/U2FsdGVkX19kAHyxw7Jbix0BQgWCVV4ZiwxcQWnxN14=END%(title)s.%(ext)s" -x --audio-format mp3 --audio-quality 0 "https://www.youtube.com/watch?v=YDgC8DkHH6M"
+2019-03-28 14:39:33 error: gFilename is not defined
+2019-03-28 14:39:43 info: start downloading https://www.youtube.com/watch?v=YDgC8DkHH6M
+With command youtube-dl -o "download/U2FsdGVkX1xx0p5VZWdVrUByQ3oSbHJMg1L7i62NRSU=END%(title)s.%(ext)s" -x --audio-format mp3 --audio-quality 0 "https://www.youtube.com/watch?v=YDgC8DkHH6M"
+2019-03-28 14:46:51 error: gFilename is not defined
+2019-03-28 14:47:12 info: start downloading https://www.youtube.com/watch?v=YDgC8DkHH6M
+With command youtube-dl -o "download/U2FsdGVkX19vbDPso9V4ZgsjJ1z2lv1WxrMXcXwkxtY=END%(title)s.%(ext)s" -x --audio-format mp3 --audio-quality 0 "https://www.youtube.com/watch?v=YDgC8DkHH6M"
+2019-03-28 14:47:16 error: gFilename is not defined
+2019-03-28 14:47:27 info: start downloading https://www.youtube.com/watch?v=YDgC8DkHH6M
+With command youtube-dl -o "download/U2FsdGVkX1xlE12lQuXo1uj5Sth4NXLBxdlgFe5A8Po=END%(title)s.%(ext)s" -x --audio-format mp3 --audio-quality 0 "https://www.youtube.com/watch?v=YDgC8DkHH6M"
+2019-03-28 14:47:44 error: gFilename is not defined
+2019-03-28 14:48:15 info: start downloading https://www.youtube.com/watch?v=YDgC8DkHH6M
+With command youtube-dl -o "download/U2FsdGVkX19MxccJWXjxyv76t7RDCz9UBUI6y4UvWRI=END%(title)s.%(ext)s" -x --audio-format mp3 --audio-quality 0 "https://www.youtube.com/watch?v=YDgC8DkHH6M"
+2019-03-28 14:49:34 info: start downloading https://www.youtube.com/watch?v=YDgC8DkHH6M
+With command youtube-dl -o "download/U2FsdGVkX19f0O3RLFxHijvbDxSY9DijZCfO0GgVFXQ=END%(title)s.%(ext)s" -x --audio-format mp3 --audio-quality 0 "https://www.youtube.com/watch?v=YDgC8DkHH6M"
+2019-03-28 14:50:22 error: No Session ID!? 
+ ID is: undefined
+2019-03-28 14:51:02 info: start downloading https://www.youtube.com/watch?v=YDgC8DkHH6M
+With command youtube-dl -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/mp4' -o "download/U2FsdGVkX1xWrmAGyD4LctsbzB3pxNmjcEdXmKvp9Ok=END%(title)s.%(ext)s" "https://www.youtube.com/watch?v=YDgC8DkHH6M"
+2019-03-28 14:54:44 info: start downloading https://www.youtube.com/watch?v=YDgC8DkHH6M
+With command youtube-dl -o "download/U2FsdGVkX1xUANzPZ5yx7I2sLTAxtCzARnHckaM0M4c=END%(title)s.%(ext)s" -x --audio-format mp3 --audio-quality 0 "https://www.youtube.com/watch?v=YDgC8DkHH6M"
+2019-03-28 15:16:06 info: start downloading https://www.youtube.com/watch?v=YDgC8DkHH6M
+With command youtube-dl -o "download/tx_dp3goE456iVTNf7YNHO4ITr2jYKY2END%(title)s.%(ext)s" -x --audio-format mp3 --audio-quality 0 "https://www.youtube.com/watch?v=YDgC8DkHH6M"
+2019-03-28 15:16:33 info: start downloading https://www.youtube.com/watch?v=YDgC8DkHH6M
+With command youtube-dl -o "download/5NfawNwXkyCNeCSUoJm9my2jC_i6JoQFEND%(title)s.%(ext)s" -x --audio-format mp3 --audio-quality 0 "https://www.youtube.com/watch?v=YDgC8DkHH6M"
+2019-03-28 15:28:51 info: start downloading https://www.youtube.com/watch?v=YDgC8DkHH6M
+With command youtube-dl -o "download/aJ2O3bf8L6gX0TUNoEHRiJYhaHpXfzBHEND%(title)s.%(ext)s" -x --audio-format mp3 --audio-quality 0 "https://www.youtube.com/watch?v=YDgC8DkHH6M"
+2019-03-28 15:29:41 info: start downloading https://www.youtube.com/watch?v=YDgC8DkHH6M
+With command youtube-dl -o "download/m4ttB7gub5o5nNVtSCNTSelRJtmCHeMIEND%(title)s.%(ext)s" -x --audio-format mp3 --audio-quality 0 "https://www.youtube.com/watch?v=YDgC8DkHH6M"
+2019-03-28 15:30:44 info: start downloading https://www.youtube.com/watch?v=YDgC8DkHH6M
+With command youtube-dl -o "download/NnkgOzd9266SISQ4D09xt0DCzdw0dPMnEND%(title)s.%(ext)s" -x --audio-format mp3 --audio-quality 0 "https://www.youtube.com/watch?v=YDgC8DkHH6M"
+2019-03-28 15:31:28 info: start downloading https://www.youtube.com/watch?v=YDgC8DkHH6M
+With command youtube-dl -o "download/bgZBJpNL8plLfCnA4oQY8ryXRtlvmD-5END%(title)s.%(ext)s" -x --audio-format mp3 --audio-quality 0 "https://www.youtube.com/watch?v=YDgC8DkHH6M"
+2019-03-28 15:32:19 info: start downloading https://www.youtube.com/watch?v=YDgC8DkHH6M
+With command youtube-dl -o "download/uBz3ychFVRf4wYuq5-58LKh_ykYZ-10SEND%(title)s.%(ext)s" -x --audio-format mp3 --audio-quality 0 "https://www.youtube.com/watch?v=YDgC8DkHH6M"
+2019-03-28 15:33:31 error: filename not defined: filename=HeyLea SWIIITTCCHH (Official Musikvideo).mp3
+2019-03-28 15:38:38 info: start downloading https://www.youtube.com/watch?v=YDgC8DkHH6M
+With command youtube-dl -o "download/gKsrSiZVFIEBrlG8E8D2a7GkefpGy9m1END%(title)s.%(ext)s" -x --audio-format mp3 --audio-quality 0 "https://www.youtube.com/watch?v=YDgC8DkHH6M"
+2019-03-28 15:39:13 info: start downloading https://www.youtube.com/watch?v=YDgC8DkHH6M
+With command youtube-dl -o "download/UjQX1o8aA0G9ZwzbfwYy2tb7pi3JTeG_END%(title)s.%(ext)s" -x --audio-format mp3 --audio-quality 0 "https://www.youtube.com/watch?v=YDgC8DkHH6M"
+2019-03-28 16:00:28 info: start downloading https://www.youtube.com/watch?v=YDgC8DkHH6M
+With command youtube-dl -o "download/U2FsdGVkX19oRGojVY3aGo2aUMbFIuIdMKsJ2vrL8sY=END%(title)s.%(ext)s" -x --audio-format mp3 --audio-quality 0 "https://www.youtube.com/watch?v=YDgC8DkHH6M"
+2019-03-28 16:01:07 info: start downloading https://www.youtube.com/watch?v=YDgC8DkHH6M
+With command youtube-dl -o "download/U2FsdGVkX1x193rps6IVudCOKO56UYwY3absEpzls2A=END%(title)s.%(ext)s" -x --audio-format mp3 --audio-quality 0 "https://www.youtube.com/watch?v=YDgC8DkHH6M"
+2019-03-28 16:03:05 info: start downloading https://www.youtube.com/watch?v=YDgC8DkHH6M
+With command youtube-dl -o "download/U2FsdGVkX1xZgXdcWN7nvep9kxb8mQm8Qkxky0wlhcg=END%(title)s.%(ext)s" -x --audio-format mp3 --audio-quality 0 "https://www.youtube.com/watch?v=YDgC8DkHH6M"
+2019-03-28 16:03:25 info: start downloading https://www.youtube.com/watch?v=YDgC8DkHH6M
+With command youtube-dl -o "download/U2FsdGVkX1xZgXdcWN7nvep9kxb8mQm8Qkxky0wlhcg=END%(title)s.%(ext)s" -x --audio-format mp3 --audio-quality 0 "https://www.youtube.com/watch?v=YDgC8DkHH6M"
+2019-03-28 16:05:41 info: start downloading https://www.youtube.com/watch?v=YDgC8DkHH6M
+With command youtube-dl -o "download/U2FsdGVkX19nDxqhXvsr8iA5gjHF8GemHhOe8VkT2Cg=END%(title)s.%(ext)s" -x --audio-format mp3 --audio-quality 0 "https://www.youtube.com/watch?v=YDgC8DkHH6M"
+2019-03-28 16:06:52 info: start downloading https://www.youtube.com/watch?v=YDgC8DkHH6M
+With command youtube-dl -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/mp4' -o "download/U2FsdGVkX1x1lTpmvbzUJQfbuwxvRx9SfevXXIw1ln8=END%(title)s.%(ext)s" "https://www.youtube.com/watch?v=YDgC8DkHH6M"
+2019-03-28 16:06:54 info: start downloading https://www.youtube.com/watch?v=YDgC8DkHH6M
+With command youtube-dl -o "download/U2FsdGVkX1x1lTpmvbzUJQfbuwxvRx9SfevXXIw1ln8=END%(title)s.%(ext)s" -x --audio-format mp3 --audio-quality 0 "https://www.youtube.com/watch?v=YDgC8DkHH6M"
+2019-03-28 16:07:00 info: Deleted file successfully.
+2019-03-28 16:07:07 info: Deleted file successfully.

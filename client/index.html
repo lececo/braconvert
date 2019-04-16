@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- PAGE settings -->
+    <title>braconvert</title>
+    <!-- CSS dependencies -->
+    <link rel="stylesheet" href="font-awesome.css"
+          type="text/css">
+    <link rel="stylesheet" href="colorful.css" type="text/css">
+    <!-- Script: Navbar on-top -->
+    <script type="text/javascript" src="navbar-ontop.js"></script>
+</head>
+
+<body>
+<script>
+    var e = document.createElement('div');
+    e.id = 'ads';
+    e.style.display = 'none';
+    document.body.appendChild(e);
+</script>
+<nav class="navbar navbar-expand-md fixed-top navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="#"><b>braconvert</b></a>
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+                data-target="#navbar3SupportedContent" aria-controls="navbar3SupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse text-center justify-content-end" id="navbar3SupportedContent">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="#wiefunktionierts">Wie funktioniert es?</a>
+                </li>
+                <li class="nav-item mx-2 mb-2 my-md-0">
+                    <a class="nav-link" href="#agb">Nutzungsbedingungen</a>
+                </li>
+            </ul>
+            <a class="btn navbar-btn btn-outline-light" href="#contact">Kontakt</a>
+        </div>
+    </div>
+    </div>
+</nav>
+
+
+<div class="py-5 text-center cover d-flex flex-column bg-dark">
+    <div class="container my-auto">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="display-1 mb-0 mt-8 title text-center">braconvert</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="mx-auto col-lg-6 col-md-8">
+                <h3 class="mb-4">Dein Online Video Converter</h3>
+                <p>Hier kannst du deine Lieblings Videos von Youtube, MyVideo und viele weiteren Webseiten in MP3 oder
+                    MP4 herunterladen.
+                    Schnell, legal, kostenlos und keine Registrierung erforderlich! </p>
+            </div>
+        </div>
+    </div>
+    <div class="container mt-auto">
+        <div class="row">
+            <div class="mx-auto col-lg-6 col-md-8 col-10">
+                <a href="#mission"><i class="d-block fa fa-angle-down fa-2x"></i></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="py-5 cover filter-dark bg-fixed"
+     style="background-image: url(karate.jpg); background-position: center bottom; background-size: cover;"
+     id="mission">
+    <div class="container my-auto">
+        <div class="row">
+            <div class="col-md-12">
+                <h3 class="">Füge den VideoLink (URL) ein und wähle das Zielformat aus:</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8" style="">
+                <div class="form-group"><input id="videoUrl" type="text"
+                                               class="form-control w-100 form-control-lg text-light"
+                                               placeholder="Video URL ..."></div>
+            </div>
+            <div class="col-md-2.5 dropDownMedia" style="">
+                <div class="btn-group ml-auto btn-group-lg" style="">
+                    <button id="button_dropdown" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+                            aria-expanded="false">audio
+                    </button>
+                    <div class="dropdown-menu" x-placement="bottom-start"
+                         style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 48px, 0px);">
+                        <b class="dropdown-item font-weight-bold">Audio</b><a id="audio_dropdown" class="dropdown-item">audio</a>
+                        <div class="dropdown-divider"></div>
+                        <b class="dropdown-item font-weight-bold">Video</b><a id="video_dropdown" class="dropdown-item">video</a>
+                    </div>
+                </div>
+            </div>
+            <!--data-target="#convertModal" data-toggle="modal"-->
+            <div class="col-md-1 checkMedia" style="">
+                <button id="convertBtn" class="btn btn-primary btn-lg ml-auto" type="button" style="">GO</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="convertModal">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 id="modalTitel" class="modal-title">Ihre Anfrage wird bearbeitet</h5>
+                <button type="button" class="close" data-dismiss="modal"><span>x</span></button>
+            </div>
+            <div class="modal-body">
+                <h6 id="progress_header">Video ist in Bearbeitung</h6>
+                <div id="progress_id" class="progress">
+                    <div id="pbID" class="progress-bar progress-bar-success progress-bar-striped active"
+                         aria-valuenow="1" aria-valuemin="0" aria-valuemax="100" style="width:1%">
+                        40%
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="download" style="display: none;" class="btn btn-primary">Herunterladen
+                    </button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="blockModal">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 id="blockTitel" class="modal-title">Bitte schalten Sie den Adblocker aus</h5>
+                <button type="button" class="close" data-dismiss="modal"><span>x</span></button>
+            </div>
+            <div class="modal-body">
+                <h6 id="blockHeader">
+                    Sie unterstützen damit diesen kostenlosen Service. Wir finanzieren braconvert zu einem Großteil
+                    durch Werbung.
+                </h6>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    Ok Ich habe verstanden.
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="py-5 bg-light" id="wiefunktionierts">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-md-10 mx-auto px-4">
+                <h2 class="text-muted mb-4">Wie es funktioniert?</h2>
+                <div class="row text-left">
+                    <div class="p-3 col-lg-4 col-md-6">
+                        <div class="row mb-3">
+                            <div class="text-center col-3"><i class="d-block mx-auto fa text-muted fa-4x fa-search"></i>
+                            </div>
+                            <div class="align-self-center d-flex align-items-center px-0 px-md-2 col-9">
+                                <h5 class="mb-0"><b>Suche das Video</b></h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-3 col-lg-4 col-md-6">
+                        <div class="row mb-3">
+                            <div class="text-center col-3"><i class="d-block mx-auto fa text-muted fa-4x fa-link"></i>
+                            </div>
+                            <div class="align-self-center d-flex align-items-center px-0 px-md-2 col-9">
+                                <h5 class="mb-0"><b>Kopiere den Videolink und füge ihn in die obere Box ein</b></h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-3 col-lg-4">
+                        <div class="row mb-3">
+                            <div class="text-center col-3"><i class="d-block mx-auto fa text-muted fa-4x fa-check"></i>
+                            </div>
+                            <div class="align-self-center d-flex align-items-center px-0 px-md-2 col-9">
+                                <h5 class="mb-0"><b>Wähle das Format aus und klicke "Go"</b></h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="py-5 text-center flex-column bg-dark">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h2 class="text-muted">Der einfachste Video Converter des Internets</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 mx-auto">
+                <label contenteditable="true" class="lead">Mit der Nutzung unseres Dienstes akzeptieren Sie unsere
+                    Nutzungsbedingungen.</label>
+            </div>
+        </div>
+        <div>
+            <a class="btn btn-primary" href="#agb">Nutzungsbedingungen</a>
+        </div>
+    </div>
+</div>
+
+<div class="py-5 text-center" id="agb">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12"></div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <h2 class="mb-4">Terms of use</h2>
+                <h5 class="mb-4">
+                    The use of the service offered at braconvert.com is governed by the following terms and conditions.
+                </h5>
+            </div>
+        </div>
+
+        <div class="row">
+            <p class="text-justify">
+                1. The use of braconvert.com is governed by German law, taking into account the following modifications.
+            </p>
+        </div>
+
+        <div class="row">
+            <p class="text-justify">
+                2. The commercial use of braconvert.com is strictly prohibited. braconvert.com may only be used for
+                private purposes.
+            </p>
+        </div>
+
+        <div class="row">
+            <p class="text-justify">
+                3. It is only allowed to access content that has been uploaded to the respective platform (e.g. YouTube)
+                by the respective authorized rights holder. The check is up to the user.
+
+            </p>
+        </div>
+
+        <div class="row">
+            <p class="text-justify">
+                4. Access to content that violates rights is prohibited. It is also forbidden to access videos that are not
+                publicly available. If the rights of third parties are already infringed by the retrieval of the content, the
+                user alone is responsible for this as he has started the process.
+
+            </p>
+        </div>
+
+        <div class="row">
+            <p class="text-justify">
+                5. The braconvert.com service serves solely to create a copy of content that can be retrieved on the Internet for
+                private use by the user. Any further use of the content provided by braconvert.com must be clarified with the
+                legal owner of the retrieved content. The user is solely responsible for all actions with the data transmitted
+                by braconvert.com. braconvert.com does not grant any rights to the content since braconvert.com is only a
+                technical service provider.
+            </p>
+        </div>
+
+        <div class="row">
+            <p class="text-justify">
+                6. braconvert.com only provides a technical service. The user is solely responsible for checking the legality of
+                his/her use of braconvert.com. Therefore braconvert.com assumes no liability towards the user or towards third
+                parties for the legitimacy of downloading content through braconvert.com.
+            </p>
+        </div>
+
+        <div class="row">
+            <p class="text-justify">
+                7. Should individual provisions of this contract be ineffective or unenforceable or become ineffective or
+                unenforceable after conclusion of the contract, the effectiveness of the rest of the contract shall remain
+                unaffected.
+            </p>
+        </div>
+    </div>
+</div>
+
+
+<div class="py-5 text-center flex-column bg-dark">
+    <div class="container" id="copyright">
+        <div class="row">
+            <div class="col-md-12">
+                <h2 class="text-muted">Matters on Copyright</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 mx-auto">
+                <div class="row">
+                    <p class="text-justify">
+                        braconvert.com respects the intellectual property rights of others, and requests you to do the same.
+                        braconvert.com does not permit copyright infringing activities on its platform, and will promptly suspend
+                        copyrighted content (served via a publicly available web address / URL) from being able to be converted and downloaded
+                        by its platform when kindly notified.
+                    </p>
+                </div>
+
+                <div class="row">
+                    <p class="text-justify">
+                        If you’re a content creator/owner, copyright owner or an agent thereof and would like to disable the possible use of
+                        braconvert.com’s platform to convert your publicly available content(s), please kindly send us a request via
+                        e-mail with the information stated below and we will blacklist the content(s) in our system within 24 hours.
+
+                    </p>
+                </div>
+
+                <div class="row">
+                    <p class="text-justify">
+                        E-mail: copyright.braconvert@gmail.com
+
+                        - The URL(s) of the content(s) you want us to block.
+                        - A form of electronic or physical evidence showing that you have the rights to the content(s).
+                        - Contact information that is reasonably sufficient to permit us to contact you, such as an address, telephone number,
+                        and a valid e-mail address.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="text-white bg-dark" id="contact">
+    <div class="container">
+        <div class="row">
+            <div class="p-5 col-md-6">
+                <h3><b>braconvert</b></h3>
+                <p class="">
+                    <a href="#">braconvert@gmail.com</a>
+                </p>
+                <a href="#" target="_blank"><i class="fa d-inline fa-lg mr-3 text-white fa-linkedin"></i></a>
+                <a href="#" target="_blank"><i class="fa fa-facebook d-inline fa-lg mr-3 text-white"></i></a>
+            </div>
+            <div class="p-5 col-md-6">
+                <h3>Gib uns Feedback!</h3>
+                <form>
+                    <div class="form-group">
+                        <input type="email" class="form-control form-control-sm" placeholder="Email" required="required"
+                               name="email"></div>
+                    <div class="form-group">
+                        <input type="text" class="form-control form-control-sm" id="inlineFormInput"
+                               placeholder="Subject" required="required" name="subject"></div>
+                    <div class="form-group"><textarea class="form-control p-1 form-control-sm" id="exampleTextarea"
+                                                      rows="3" placeholder="Your message" name="message"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-outline-light btn-sm">SUBMIT</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="jquery_3_3_1.js" type="text/javascript"></script>
+<script src="popper.min.js" type="text/javascript"></script>
+<script src="bootstrap.min.js" type="text/javascript"></script>
+<!-- Script: Smooth scrolling between anchors in the same page -->
+<script src="app.js" type="text/javascript"></script>
+<script src="smooth-scroll.js" type="text/javascript"></script>
+</body>
+</html>
