@@ -1,3 +1,0 @@
-2019-03-29 19:35:25 info: start downloading https://www.youtube.com/watch?v=NU4Q7ki9MnY
-With command youtube-dl -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/mp4' -o "download/U2FsdGVkX1xkPdxp09cfEAIQYzPCZiqqnkMRFE5Asns=END%(title)s.%(ext)s" "https://www.youtube.com/watch?v=NU4Q7ki9MnY"
-2019-03-29 19:35:43 info: Deleted file successfully.

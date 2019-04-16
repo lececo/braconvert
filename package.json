@@ -1,4 +1,14 @@
 {
+  "name": "app-braconvert",
+    "description": "Video and Audio Converter",
+    "version": "0.0.1",
+    "private": true,
+    "license": "MIT",
+    "author": "Leon Cört",
+    "scripts": {
+        "start": "node server.js"
+    },
+
   "dependencies": {
     "@types/crypto-js": "^3.1.37",
     "@types/debug": "0.0.30",
