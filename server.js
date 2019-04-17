@@ -59,8 +59,7 @@ const logger = createLogger({
  *****************************************************************************/
 var router = express();
 
-const port = 1337;
-// process.env.PORT || 
+const port = process.env.PORT || 1337;
 
 // cors({credentials: true, origin: true})
 router.use(cors({origin: true, exposedHeaders: ['Content-Disposition']}));
