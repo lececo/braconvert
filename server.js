@@ -58,13 +58,13 @@ const logger = createLogger({
  ***  Create server with handler function and start it                       *
  *****************************************************************************/
 var router = express();
-const port = process.env.PORT || 1337;
+const port = 1337;
+// process.env.PORT || 
 
 // cors({credentials: true, origin: true})
 router.use(cors({origin: true, exposedHeaders: ['Content-Disposition']}));
 
 router.listen(port);
-console.log("Server running at http://localhost:%d", port);
 
 //--- parsing json -----------------------------------------------------------
 router.use(express.json());
