@@ -58,7 +58,8 @@ const logger = createLogger({
  ***  Create server with handler function and start it                       *
  *****************************************************************************/
 var router = express();
-const port = process.env.PORT || 1337;
+const port = 8080;
+// process.env.PORT || 1337;
 
 // cors({credentials: true, origin: true})
 router.use(cors({origin: true, exposedHeaders: ['Content-Disposition']}));
