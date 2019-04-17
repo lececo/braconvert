@@ -58,6 +58,7 @@ const logger = createLogger({
  ***  Create server with handler function and start it                       *
  *****************************************************************************/
 var router = express();
+
 const port = 1337;
 // process.env.PORT || 
 
