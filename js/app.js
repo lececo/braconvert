@@ -63,7 +63,7 @@ function handleVideoConvert(url) {
         };
 
         $.ajax({                // set up ajax request
-            url: 'http://localhost:8080/convert',
+            url: 'https://braconvapp.azurewebsites.net/convert',
             type: 'POST',    // POST-request for CREATE
             data: JSON.stringify(data),
             contentType: 'application/json',  // using json in request
@@ -94,7 +94,7 @@ function downloadVideo() {
         return;
     }
 
-    window.location.href = `http://localhost:8080/download?id=${gid}&name=${name}`;
+    window.location.href = `https://braconvapp.azurewebsites.net/download?id=${gid}&name=${name}`;
     name = null;
 }
 
