@@ -63,7 +63,7 @@ function handleVideoConvert(url) {
         };
 
         $.ajax({                // set up ajax request
-            url: 'https://braconvertapp.azurewebsites.net/convert',
+            url: 'http://www.braconvert.com/convert',
             type: 'POST',    // POST-request for CREATE
             data: JSON.stringify(data),
             contentType: 'application/json',  // using json in request
@@ -94,7 +94,7 @@ function downloadVideo() {
         return;
     }
 
-    window.location.href = `https://braconvertapp.azurewebsites.net/download?id=${gid}&name=${name}`;
+    window.location.href = `http://www.braconvert.com/download?id=${gid}&name=${name}`;
     name = null;
 }
 
