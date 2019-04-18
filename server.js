@@ -263,7 +263,6 @@ router.get("/download:id?", function (req, res) {
             return;
         }
 
-
         var file = null;
         var path = require('path');
         var pathFile = "download\/" + id + 'END' + filename;
