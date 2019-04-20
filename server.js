@@ -1,8 +1,149 @@
 "use strict";
 exports.__esModule = true;
 
+// global variable
+var fileid = null;
+var filenameID = null;
+
 const cluser = require("cluster");
 const os = require("os");
+const cryptoJS = require("crypto-js"); // crypting
+
+const debug = require("debug");
+const {createLogger, format, transports} = require('winston');
+const debugHTTP = debug("http"); // debugging http
+//require('winston-daily-rotate-file');
+//const logDir = 'log';
+const env = process.env.NODE_ENV || 'development';
+
+const logger = createLogger({
+    // change level if in dev environment versus production
+    level: env === 'development' ? 'verbose' : 'info',
+    format: format.combine(
+        format.timestamp({
+            format: 'YYYY-MM-DD HH:mm:ss'
+        }),
+        format.printf(info => `${info.timestamp} ${info.level}: ${info.message}`)
+    ),
+    transports: [
+        new transports.Console({
+            level: 'info',
+            format: format.combine(
+                format.colorize(),
+                format.printf(
+                    info => `${info.timestamp} ${info.level}: ${info.message}`
+                )
+            )
+        }),
+        //          dailyRotateFileTransport
+    ]
+});
+
+function cleanString(input) {
+    var output = "";
+    for (var i=0; i<input.length; i++) {
+        if (input.charCodeAt(i) <= 127) {
+            output += input.charAt(i);
+        }
+    }
+    return output;
+}
+
+function getUnicId(url) {
+    var r = Math.random().toString(36).substring(7);
+    return cryptoJS.AES.encrypt(url, r).toString().replace(/\/|\+|\-|\*/g, "x");
+}
+
+function checkRights(req, res) {
+    var response;
+    if (!req.session.rights) {
+        response = {message: "No session: Please turn off incognito or private browser mode!"};
+        res.status(401); // set HTTP response state
+        res.json(response); // send HTTP-response
+        debugHTTP("\n-----------------------------------------------------------");
+        debugHTTP(JSON.stringify(response, null, 2) + "\n");
+        return false;
+    }
+    return true;
+}
+
+/*****************************************************************************
+ *** sendData                                                                *
+ *** Function that is called by each route to send data                      *
+ *** gets userList from database , constructs and send response              *
+ *****************************************************************************/
+function sendData(status, res, message, filename) {
+    /*
+      status   : HTTP response state            (provided in any case)
+      res      : Response object for responding (provided in any case)
+      message  : Message to be returned         (provided in any case)
+    */
+    //--- Variable declaration with detailed type of response -------------------
+    var response;
+
+    if (!filename) {
+        response = {message: message};
+    } else {
+        response = {message: message, filename: filename}
+    }
+
+    res.status(status); // set HTTP response state, provided as parameter
+    res.json(response); // send HTTP-response
+    debugHTTP("\n-----------------------------------------------------------");
+    debugHTTP(JSON.stringify(response, null, 2) + "\n");
+}
+
+
+async function executeCommand(execCommand, res) {
+    const util = require('util');
+    const exec = util.promisify(require('child_process').exec);
+
+    logger.info("start downloading! With command " + execCommand);
+
+    exec(execCommand).then((result) => {
+        console.log('stdout:', result.stdout);
+        console.log('stderr:', result.stderr);
+
+        var stdout = result.stdout;
+
+        var filenameRegex = "Destination: download\/.*." + "\nDeleting original file download\/";
+        var match = stdout.toString().match(filenameRegex);
+        if (match) {
+            filenameID = match.toString().substring(0, match.toString().length - 33);
+            filenameID = filenameID.toString().replace(/.*END/g, "");
+        } else {
+            filenameRegex = "Merging formats into \"download\/.*." + "\nDeleting original file download\/";
+            match = stdout.toString().match(filenameRegex);
+            if (match) {
+                filenameID = match.toString().substring(0, match.toString().length - 34);
+                filenameID = filenameID.toString().replace(/.*END/g, "");
+            } else {
+                logger.error('Possible REGEX ERROR!!! \n stdout output:' + stdout);
+                var message = "Bad Request: not all mandatory parameters provided";
+                sendData(400, res, message); // send message and all data
+            }
+        }
+
+        sendData(200, res, "Success", filenameID);
+    })
+        .catch(e => {
+            logger.error('Error: ' + e);
+            var message = "";
+            if (e.toString().includes("Unsupported URL")) {
+                message = "URL is not correct. Please check the URL!";
+            } else if (e.toString().includes("Incomplete YouTube ID")) {
+                message = "URL is incomplete. Please check the URL!";
+            } else if (e.toString().includes("This video is unavailable")) {
+                message = "This video is unavailable. Maybe check the URL."
+            } else if (e.toString().includes("caused by URLError")) {
+                message = "URL error. Please check the URL!";
+            } else {
+                message = "Unknown error please try again later!";
+            }
+
+            sendData(400, res, message);
+        });
+}
 
 if (cluser.isMaster) {
     const n_cpus = os.cpus().length;
@@ -11,27 +152,16 @@ if (cluser.isMaster) {
         cluser.fork();
     }
 } else {
-
-    // global variable
-    var fileid = null;
-    var filenameID = null;
-
     const express = require("express"); // routing
     const session = require("express-session"); // sessions
-    const cryptoJS = require("crypto-js"); // crypting
     const fs = require("fs");
     //const ytdl = require('ytdl-core');
-    const debug = require("debug");
     //const debugLogin = debug("login"); // debugging login
-    const debugHTTP = debug("http"); // debugging http
+
 
     // cross-origin-requests
     const cors = require('cors')
 
-    const {createLogger, format, transports} = require('winston');
-    require('winston-daily-rotate-file');
-    const env = process.env.NODE_ENV || 'development';
-    const logDir = 'log';
 
     //const unicID = getUnicId();
 
@@ -49,131 +179,11 @@ if (cluser.isMaster) {
     });
     */
 
-    const logger = createLogger({
-        // change level if in dev environment versus production
-        level: env === 'development' ? 'verbose' : 'info',
-        format: format.combine(
-            format.timestamp({
-                format: 'YYYY-MM-DD HH:mm:ss'
-            }),
-            format.printf(info => `${info.timestamp} ${info.level}: ${info.message}`)
-        ),
-        transports: [
-            new transports.Console({
-                level: 'info',
-                format: format.combine(
-                    format.colorize(),
-                    format.printf(
-                        info => `${info.timestamp} ${info.level}: ${info.message}`
-                    )
-                )
-            }),
-            //          dailyRotateFileTransport
-        ]
-    });
-
-
-    function getUnicId(url) {
-        var r = Math.random().toString(36).substring(7);
-        return cryptoJS.AES.encrypt(url, r).toString().replace(/\/|\+|\-|\*/g, "x");
-    }
-
-    function checkRights(req, res) {
-        var response;
-        if (!req.session.rights) {
-            response = {message: "No session: Please turn off incognito or private browser mode!"};
-            res.status(401); // set HTTP response state
-            res.json(response); // send HTTP-response
-            debugHTTP("\n-----------------------------------------------------------");
-            debugHTTP(JSON.stringify(response, null, 2) + "\n");
-            return false;
-        }
-        return true;
-    }
-
-    /*****************************************************************************
-     *** sendData                                                                *
-     *** Function that is called by each route to send data                      *
-     *** gets userList from database , constructs and send response              *
-     *****************************************************************************/
-    function sendData(status, res, message, filename) {
-        /*
-          status   : HTTP response state            (provided in any case)
-          res      : Response object for responding (provided in any case)
-          message  : Message to be returned         (provided in any case)
-        */
-        //--- Variable declaration with detailed type of response -------------------
-        var response;
-
-        if (!filename) {
-            response = {message: message};
-        } else {
-            response = {message: message, filename: filename}
-        }
-
-        res.status(status); // set HTTP response state, provided as parameter
-        res.json(response); // send HTTP-response
-        debugHTTP("\n-----------------------------------------------------------");
-        debugHTTP(JSON.stringify(response, null, 2) + "\n");
-    }
-
-
-    async function executeCommand(execCommand, res) {
-        const util = require('util');
-        const exec = util.promisify(require('child_process').exec);
-
-        logger.info("start downloading! With command " + execCommand);
-
-        exec(execCommand).then((result) => {
-            console.log('stdout:', result.stdout);
-            console.log('stderr:', result.stderr);
-
-            var stdout = result.stdout;
-
-            var filenameRegex = "Destination: download\/.*." + "\nDeleting original file download\/";
-            var match = stdout.toString().match(filenameRegex);
-            if (match) {
-                filenameID = match.toString().substring(0, match.toString().length - 33);
-                filenameID = filenameID.toString().replace(/.*END/g, "");
-            } else {
-                filenameRegex = "Merging formats into \"download\/.*." + "\nDeleting original file download\/";
-                match = stdout.toString().match(filenameRegex);
-                if (match) {
-                    filenameID = match.toString().substring(0, match.toString().length - 34);
-                    filenameID = filenameID.toString().replace(/.*END/g, "");
-                } else {
-                    logger.error('Possible REGEX ERROR!!! \n stdout output:' + stdout);
-                    var message = "Bad Request: not all mandatory parameters provided";
-                    sendData(400, res, message); // send message and all data
-                }
-            }
-
-            sendData(200, res, "Success", filenameID);
-        })
-            .catch(e => {
-                logger.error('Error: ' + e);
-                var message = "";
-                if (e.toString().includes("Unsupported URL")) {
-                    message = "URL is not correct. Please check the URL!";
-                } else if (e.toString().includes("Incomplete YouTube ID")) {
-                    message = "URL is incomplete. Please check the URL!";
-                } else if (e.toString().includes("This video is unavailable")) {
-                    message = "This video is unavailable. Maybe check the URL."
-                } else if (e.toString().includes("caused by URLError")) {
-                    message = "URL error. Please check the URL!";
-                } else {
-                    message = "Unknown error please try again later!";
-                }
-
-                sendData(400, res, message);
-            });
-    }
 
     /*****************************************************************************
      ***  Create server with handler function and start it                       *
      *****************************************************************************/
     var router = express();
-
     const port = process.env.PORT || 1337;
 
 // cors({credentials: true, origin: true})
@@ -308,8 +318,11 @@ if (cluser.isMaster) {
 
                         var message = "Sorry: Please request your video or audio again!";
                         sendData(500, res, message); // send message and all data
+
+                        return;
                     }
 
+                    filename = cleanString(filename);
                     res.header('Content-Disposition', `attachment; filename="${filename}"`);
                     res.end(data, "utf-8");
 
@@ -318,8 +331,6 @@ if (cluser.isMaster) {
                             logger.error('ERROR in deleting file: ' + err);
                         } else {
                             logger.info('Deleted file successfully.');
-                            filenameID = null;
-                            fileid = null;
                         }
                     });
                 });
