@@ -41,7 +41,7 @@ const logger = createLogger({
 
 function cleanString(input) {
     var output = "";
-    for (var i=0; i<input.length; i++) {
+    for (var i = 0; i < input.length; i++) {
         if (input.charCodeAt(i) <= 127) {
             output += input.charAt(i);
         }
@@ -311,17 +311,13 @@ if (cluser.isMaster) {
             var pathFile = "download\/" + id + 'END' + filename;
             var file = path.join(__dirname, pathFile);
 
-            try {
-                fs.readFile(file, function (err, data) {
-                    if (err) {
-                        logger.error('ERROR in download route: ' + err);
+            fs.readFile(file, function (err, data) {
+                if (err) {
+                    logger.error('ERROR in download route: ' + err);
 
-                        var message = "Sorry: Please request your video or audio again!" + err;
-                        sendData(500, res, message); // send message and all data
-
-                        return;
-                    }
-
+                    var message = "Sorry: Please request your video or audio again!" + err;
+                    sendData(500, res, message); // send message and all data
+                } else {
                     filename = cleanString(filename);
                     res.header('Content-Disposition', `attachment; filename="${filename}"`);
                     res.end(data, "utf-8");
@@ -333,13 +329,8 @@ if (cluser.isMaster) {
                             logger.info('Deleted file successfully.');
                         }
                     });
-                });
-            } catch (e) {
-                logger.error('ERROR in download route: ' + e);
-
-                var message = "Sorry: Please request your video or audio again!" + e;
-                sendData(500, res, message); // send message and all data
-            }
+                }
+            });
         } else {
             logger.error('filename or id not defined: filename=' + filename + ' id=' + id);
 
