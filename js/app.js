@@ -98,7 +98,7 @@ function downloadVideo() {
         return;
     }
 
-    window.location.href = `/download`;
+    window.location.assign(`/download`);
     name = null;
 }
 

@@ -316,7 +316,7 @@ if (cluser.isMaster) {
                     if (err) {
                         logger.error('ERROR in download route: ' + err);
 
-                        var message = "Sorry: Please request your video or audio again!";
+                        var message = "Sorry: Please request your video or audio again!" + err;
                         sendData(500, res, message); // send message and all data
 
                         return;
@@ -337,7 +337,7 @@ if (cluser.isMaster) {
             } catch (e) {
                 logger.error('ERROR in download route: ' + e);
 
-                var message = "Sorry: Please request your video or audio again!";
+                var message = "Sorry: Please request your video or audio again!" + e;
                 sendData(500, res, message); // send message and all data
             }
         } else {
