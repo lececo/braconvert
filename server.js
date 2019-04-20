@@ -12,6 +12,10 @@ if (cluser.isMaster) {
     }
 } else {
 
+    // global variable
+    var fileid = null;
+    var filenameID = null;
+
     const express = require("express"); // routing
     const session = require("express-session"); // sessions
     const cryptoJS = require("crypto-js"); // crypting
@@ -29,10 +33,12 @@ if (cluser.isMaster) {
     const env = process.env.NODE_ENV || 'development';
     const logDir = 'log';
 
-    const unicID = getUnicId();
+    //const unicID = getUnicId();
 
 
 // Create the log directory if it does not exist
+
+    /*
     if (!fs.existsSync(logDir)) {
         fs.mkdirSync(logDir);
     }
@@ -41,6 +47,7 @@ if (cluser.isMaster) {
         filename: `${logDir}/%DATE%-results.log`,
         datePattern: 'YYYY-MM-DD'
     });
+    */
 
     const logger = createLogger({
         // change level if in dev environment versus production
@@ -61,9 +68,10 @@ if (cluser.isMaster) {
                     )
                 )
             }),
-            dailyRotateFileTransport
+            //          dailyRotateFileTransport
         ]
     });
+
 
     function getUnicId(url) {
         var r = Math.random().toString(36).substring(7);
@@ -88,7 +96,7 @@ if (cluser.isMaster) {
      *** Function that is called by each route to send data                      *
      *** gets userList from database , constructs and send response              *
      *****************************************************************************/
-    function sendData(status, res, message, id, filename) {
+    function sendData(status, res, message, filename) {
         /*
           status   : HTTP response state            (provided in any case)
           res      : Response object for responding (provided in any case)
@@ -97,14 +105,10 @@ if (cluser.isMaster) {
         //--- Variable declaration with detailed type of response -------------------
         var response;
 
-        if (!filename && !id) {
+        if (!filename) {
             response = {message: message};
-        } else if (id && filename) {
-            response = {message: message, id: id, filename: filename}
-        } else if (filename) {
+        } else {
             response = {message: message, filename: filename}
-        } else if (id) {
-            response = {message: message, id: id}
         }
 
         res.status(status); // set HTTP response state, provided as parameter
@@ -113,6 +117,57 @@ if (cluser.isMaster) {
         debugHTTP(JSON.stringify(response, null, 2) + "\n");
     }
 
+
+    async function executeCommand(execCommand, res) {
+        const util = require('util');
+        const exec = util.promisify(require('child_process').exec);
+
+        logger.info("start downloading! With command " + execCommand);
+
+        exec(execCommand).then((result) => {
+            console.log('stdout:', result.stdout);
+            console.log('stderr:', result.stderr);
+
+            var stdout = result.stdout;
+
+            var filenameRegex = "Destination: download\/.*." + "\nDeleting original file download\/";
+            var match = stdout.toString().match(filenameRegex);
+            if (match) {
+                filenameID = match.toString().substring(0, match.toString().length - 33);
+                filenameID = filenameID.toString().replace(/.*END/g, "");
+            } else {
+                filenameRegex = "Merging formats into \"download\/.*." + "\nDeleting original file download\/";
+                match = stdout.toString().match(filenameRegex);
+                if (match) {
+                    filenameID = match.toString().substring(0, match.toString().length - 34);
+                    filenameID = filenameID.toString().replace(/.*END/g, "");
+                } else {
+                    logger.error('Possible REGEX ERROR!!! \n stdout output:' + stdout);
+                    var message = "Bad Request: not all mandatory parameters provided";
+                    sendData(400, res, message); // send message and all data
+                }
+            }
+
+            sendData(200, res, "Success", filenameID);
+        })
+            .catch(e => {
+                logger.error('Error: ' + e);
+                var message = "";
+                if (e.toString().includes("Unsupported URL")) {
+                    message = "URL is not correct. Please check the URL!";
+                } else if (e.toString().includes("Incomplete YouTube ID")) {
+                    message = "URL is incomplete. Please check the URL!";
+                } else if (e.toString().includes("This video is unavailable")) {
+                    message = "This video is unavailable. Maybe check the URL."
+                } else if (e.toString().includes("caused by URLError")) {
+                    message = "URL error. Please check the URL!";
+                } else {
+                    message = "Unknown error please try again later!";
+                }
+
+                sendData(400, res, message);
+            });
+    }
 
     /*****************************************************************************
      ***  Create server with handler function and start it                       *
@@ -208,47 +263,17 @@ if (cluser.isMaster) {
         if ((url !== "") && (format !== "") && pattURL.test(url) && format === "audio" || format === "video") {
             //const unicID = getUnicId();
             //const unicID = req.session.id;
-            const util = require('util');
-            const exec = util.promisify(require('child_process').exec);
             var command = null;
-            var gFilename = null;
+
+            fileid = getUnicId();
 
             if (format === "audio") {
-                command = `youtube-dl -o \"download/${unicID}END%(title)s.%(ext)s\" -x --audio-format mp3 --audio-quality 0 \"${url}\"`;
+                command = `youtube-dl -o \"download/${fileid}END%(title)s.%(ext)s\" -x --audio-format mp3 --audio-quality 0 \"${url}\"`;
             } else {
-                command = `youtube-dl -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/mp4' -o \"download/${unicID}END%(title)s.%(ext)s\" \"${url}\"`;
+                command = `youtube-dl -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/mp4' -o \"download/${fileid}END%(title)s.%(ext)s\" \"${url}\"`;
             }
 
-            async function executeCommand(execCommand) {
-                logger.info("start downloading " + url + "\n" +
-                    "With command " + execCommand);
-
-                const {stdout, stderr} = await exec(execCommand);
-                console.log('stdout:', stdout);
-                console.log('stderr:', stderr);
-
-                var filenameRegex = "Destination: download\/.*." + "\nDeleting original file download\/";
-                var match = stdout.toString().match(filenameRegex);
-                if (match) {
-                    gFilename = match.toString().substring(0, match.toString().length - 33);
-                    gFilename = gFilename.toString().replace(/.*END/g, "");
-                } else {
-                    filenameRegex = "Merging formats into \"download\/.*." + "\nDeleting original file download\/";
-                    match = stdout.toString().match(filenameRegex);
-                    if (match) {
-                        gFilename = match.toString().substring(0, match.toString().length - 34);
-                        gFilename = gFilename.toString().replace(/.*END/g, "");
-                    } else {
-                        logger.error('Possible REGEX ERROR!!! \n stdout output:' + stdout);
-                        var message = "Bad Request: not all mandatory parameters provided";
-                        sendData(400, res, message); // send message and all data
-                    }
-                }
-
-                sendData(200, res, "Success", unicID, gFilename);
-            }
-
-            executeCommand(command).catch((err) => {
+            executeCommand(command, res).catch((err) => {
                 logger.error(err);
             });
         } else {
@@ -260,10 +285,10 @@ if (cluser.isMaster) {
     });
 
 
-    router.get("/download:id?", function (req, res) {
-        var filename = req.query.name;
-        var id = req.query.id;
-        if (filename || id || id !== unicID) {
+    router.get("/download", function (req, res) {
+        var filename = filenameID;
+        var id = fileid;
+        if (filename || id || id !== fileid) {
             if (!req.session.id) {
                 logger.error('No Session ID!? \n ID is: ' + req.session.uID);
                 var message = "No session: Please turn off incognito or private browser mode!";
@@ -293,6 +318,8 @@ if (cluser.isMaster) {
                             logger.error('ERROR in deleting file: ' + err);
                         } else {
                             logger.info('Deleted file successfully.');
+                            filenameID = null;
+                            fileid = null;
                         }
                     });
                 });

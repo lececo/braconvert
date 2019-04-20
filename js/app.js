@@ -1,6 +1,5 @@
 var videoFormat = "audio";
 var progressBarCounter = 0;
-var gid = null;
 var name = null;
 
 function dropDownInfo(format) {
@@ -8,13 +7,17 @@ function dropDownInfo(format) {
     $('#button_dropdown').text(format);
 }
 
-function changeModal(success) {
+function changeModal(success, message) {
     if (success) {
         document.getElementById("download").style.display = "block";
         $("h6#progress_header").html("Titel: " + name + " kann heruntergeladen werden!");
         $("h5#modalTitel").html("Anfrage erfolgreich.");
     } else {
-        $("h6#progress_header").html("Fehler, geben Sie eine gültige URL ein");
+        if (!message) {
+            $("h6#progress_header").html("Unknown error happened. Please try again later!");
+        } else {
+            $("h6#progress_header").html(message);
+        }
         $("h5#modalTitel").html("Anfrage nicht erfolgreich");
         document.getElementById("progress_id").style.display = "none";
     }
@@ -70,13 +73,14 @@ function handleVideoConvert(url) {
             crossDomain: 'true',
             dataType: 'json',
             error: (jqXHR, textstatus, errorthrown) => {
-                console.log(jqXHR.responseJSON, jqXHR.status);
-                changeModal(false);
+                //console.log(jqXHR.responseJSON, jqXHR.status);
+                //console.log(textstatus);
+                console.log(jqXHR.responseJSON);
+                changeModal(false, jqXHR.responseJSON.message);
             },
             success: (data, textStatus, request) => {
 
                 if (data.message.toString().includes("Success")) {
-                    gid = data.id;
                     name = data.filename;
 
                     makeProgressEnd();
@@ -90,11 +94,11 @@ function handleVideoConvert(url) {
 function downloadVideo() {
     downloadVideoModal();
 
-    if ((!gid || !name)) {
+    if ((!name)) {
         return;
     }
 
-    window.location.href = `/download?id=${gid}&name=${name}`;
+    window.location.href = `/download`;
     name = null;
 }
 
@@ -117,11 +121,10 @@ $(document).ready(function () {
 
             handleVideoConvert(url);
         }
-
     });
 
     $('#download').click(function () {
-        if (progressBarCounter >= 100 && gid !== null) {
+        if (name !== null) {
             downloadVideo();
         }
     });
