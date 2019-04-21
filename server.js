@@ -134,7 +134,7 @@ if (cluster.isMaster) {
 // Add headers
     router.use(function (req, res, next) {
         // Website you wish to allow to connect
-        res.setHeader('Access-Control-Allow-Origin', "localhost:1337");
+        res.setHeader('Access-Control-Allow-Origin', "http://braconvert.com, https://braconvert.com");
         // Request methods you wish to allow
         res.setHeader('Access-Control-Allow-Methods', 'GET, POST');
         // Request headers you wish to allow
