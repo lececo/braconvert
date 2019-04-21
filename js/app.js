@@ -101,12 +101,11 @@ function downloadVideo() {
         type: 'GET',    // POST-request for CREATE
         crossDomain: 'true',
         error: (jqXHR, textstatus, errorthrown) => {
-            //console.log(jqXHR.responseJSON, jqXHR.status);
-            //console.log(textstatus);
             console.log(jqXHR.responseJSON);
         },
         success: (data, textStatus, request) => {
             if (textStatus.toString().includes("success")) {
+                console.log(data);
                 var a = document.createElement('A');
                 a.download = data;
                 document.body.appendChild(a);
@@ -119,12 +118,12 @@ function downloadVideo() {
     });
     */
 
-    window.location.assign(`/download`);
+    window.location.href = "/download";
     name = null;
 }
 
 function checkBlock() {
-    if (!document.getElementById('ads')) {
+    if (!document.getElementById("commercial_ads")) {
         $('#blockModal').modal('show');
         setTimeout(checkBlock, 5000);
     }
