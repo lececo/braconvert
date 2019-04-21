@@ -122,8 +122,9 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" id="download" style="display: none;" class="btn btn-primary">Herunterladen
-                    </button>
+                    <form action="/download" method="get">
+                        <input type="submit" id="download" class="btn btn-primary" style="display: none;" value="Herunterladen">
+                    </form>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </div>

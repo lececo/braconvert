@@ -55,7 +55,6 @@ function makeProgressEnd() {
     }
 }
 
-
 function handleVideoConvert(url) {
 
     // Prevent empty names
@@ -94,31 +93,6 @@ function downloadVideo() {
     if ((!name)) {
         return;
     }
-
-    /*
-    $.ajax({                // set up ajax request
-        url: '/download',
-        type: 'GET',    // POST-request for CREATE
-        crossDomain: 'true',
-        error: (jqXHR, textstatus, errorthrown) => {
-            console.log(jqXHR.responseJSON);
-        },
-        success: (data, textStatus, request) => {
-            if (textStatus.toString().includes("success")) {
-                console.log(data);
-                var a = document.createElement('A');
-                a.download = data;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-            } else {
-                console.log(textStatus);
-            }
-        },
-    });
-    */
-
-    window.location.href = "/download";
     name = null;
 }
 

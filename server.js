@@ -78,13 +78,8 @@ if (cluster.isMaster) {
     }
 
     function checkRights(req, res) {
-        var response;
         if (!req.session.rights) {
-            response = {message: "No session: Please turn off incognito or private browser mode!"};
-            res.status(401); // set HTTP response state
-            res.json(response); // send HTTP-response
-            debugHTTP("\n-----------------------------------------------------------");
-            debugHTTP(JSON.stringify(response, null, 2) + "\n");
+            sendData(401, res, "No session: Please turn off incognito or private browser mode!");
             return false;
         }
         return true;
@@ -171,6 +166,7 @@ if (cluster.isMaster) {
             if (req.sessionID.toString() !== "" ||
                 req.cookies.toString() !== null ||
                 !req.cookies.toString()) {
+                req.session.rights = true;
                 next(); // call subsequent routers (only if logged in)
             } else {
                 message = "Session expired: Please turn off incognito or private browser mode!";
@@ -189,106 +185,117 @@ if (cluster.isMaster) {
 
 
     router.post("/convert", function (req, res) {
-        let url = (req.body.url ? req.body.url : "").trim();
-        let format = (req.body.format ? req.body.format : "").trim();
-        let message = "";
-        let regexURL = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?)/i;
+        if (checkRights(req, res)) {
+            let url = (req.body.url ? req.body.url : "").trim();
+            let format = (req.body.format ? req.body.format : "").trim();
+            let message = "";
+            let regexURL = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?)/i;
 
-        //--- check Rights -> RETURN if not sufficient ------------------------------
-        // if (!checkRights(req,res)) { return; }
-        let pattURL = new RegExp(regexURL);
+            //--- check Rights -> RETURN if not sufficient ------------------------------
+            // if (!checkRights(req,res)) { return; }
+            let pattURL = new RegExp(regexURL);
 
 
-        //-- ok -> convert logic-----------------------------------
-        if ((url !== "") && (format !== "") && pattURL.test(url) && format === "audio" || format === "video") {
-            ytdl.getInfo(url, (err, info) => {
-                if (err) {
-                    sendData(400, res, "Can't donwload video. It is restricted");
-                } else {
-                    req.session.gInfo = info;
-                    req.session.gUrl = url;
-                    req.session.gFormat = format;
-                    req.session.gFilename = info.title;
+            //-- ok -> convert logic-----------------------------------
+            if ((url !== "") && (format !== "") && pattURL.test(url) && format === "audio" || format === "video") {
+                ytdl.getInfo(url, (err, info) => {
+                    if (err) {
+                        sendData(400, res, "Can't donwload video. It is restricted");
+                    } else {
+                        req.session.gInfo = info;
+                        req.session.gUrl = url;
+                        req.session.gFormat = format;
+                        req.session.gFilename = info.title;
 
-                    sendData(200, res, "Success", info.title);
-                }
-            });
+                        sendData(200, res, "Success", info.title);
+                    }
+                });
 
-        } else {
-            logger.warn('URL: ' + url, 'Format: ' + format, 'regex url test: ' + pattURL.test(url));
+            } else {
+                logger.warn('URL: ' + url, 'Format: ' + format, 'regex url test: ' + pattURL.test(url));
 
-            message = "Bad Request: not all mandatory parameters provided";
-            sendData(400, res, message); // send message and all data
+                message = "Bad Request: not all mandatory parameters provided";
+                sendData(400, res, message); // send message and all data
+            }
         }
     });
 
 
     router.get("/download", function (req, res) {
-        if (req.session.gUrl) {
-            if (!req.session.id) {
-                logger.error('No Session ID!? \n ID is: ' + req.session.uID);
-                var message = "No session: Please turn off incognito or private browser mode!";
-                sendData(400, res, message); // send message and all data
+            if (checkRights(req, res)) {
+                if (req.session.gUrl) {
+                    if (!req.session.id) {
+                        logger.error('No Session ID!? \n ID is: ' + req.session.uID);
+                        var message = "No session: Please turn off incognito or private browser mode!";
+                        sendData(400, res, message); // send message and all data
 
-                return;
-            }
-
-            const audioOutput = path.resolve(__dirname, 'sound.mp4');
-            const mainOutput = path.resolve(__dirname, req.session.gFilename + ".mp4");
-
-            if (req.session.gFormat === "audio") {
-                let filename = cleanString(req.session.gFilename);
-                res.header('Content-Disposition', `attachment; filename="${filename}.mp3"`);
-
-                ytdl.downloadFromInfo(req.session.gInfo, {
-                    filter: format => {
-                        return format.container === 'm4a' && !format.encoding;
+                        return;
                     }
-                }).pipe(res);
 
-            } else if (req.session.gFormat === "video") {
-                ytdl.downloadFromInfo(req.session.gInfo, {
-                    filter: format => {
-                        return format.container === 'm4a' && !format.encoding;
-                    }
-                })
-                // Write audio to file since ffmpeg supports only one input stream.
-                    .pipe(fs.createWriteStream(audioOutput))
-                    .on('finish', () => {
-                        ffmpeg()
-                            .input(ytdl.downloadFromInfo(req.session.gInfo, {
-                                filter: format => {
-                                    return format.container === 'mp4' && !format.audioEncoding;
-                                }
-                            }))
-                            .videoCodec('copy')
-                            .input(audioOutput)
-                            .audioCodec('copy')
-                            .save(mainOutput)
-                            .on('error', console.error)
-                            .on('progress', progress => {
-                            }).on('end', () => {
+                    const audioOutput = path.resolve(__dirname, req.session.gFilename + "sound.mp4");
+                    const mainOutput = path.resolve(__dirname, req.session.gFilename + ".mp4");
 
-                            var data = fs.readFileSync(mainOutput);
-                            let filename = cleanString(req.session.gFilename);
-                            res.header('Content-Disposition', `attachment; filename="${filename}.mp4"`);
-                            res.end(data, "utf-8");
+                    if (req.session.gFormat === "audio") {
+                        ytdl.downloadFromInfo(req.session.gInfo, {
+                            filter: format => {
+                                return format.container === 'm4a' && !format.encoding;
+                            }
+                        }).pipe(fs.createWriteStream(audioOutput))
+                            .on('finish', () => {
+                                var data = fs.readFileSync(audioOutput);
+                                let filename = cleanString(req.session.gFilename);
+                                res.header('Content-Disposition', `attachment; filename="${filename}.mp3"`);
+                                res.end(data, "utf-8");
 
-                            fs.unlink(audioOutput, err => {
-                                if (err) console.error(err);
-                                else console.log('\nfinished downloading');
+                                fs.unlink(audioOutput, err => {
+                                    if (err) console.error(err);
+                                    else console.log('\nfinished downloading');
+                                });
                             });
-                        });
-                    });
+                    } else if (req.session.gFormat === "video") {
+                        ytdl.downloadFromInfo(req.session.gInfo, {
+                            filter: format => {
+                                return format.container === 'm4a' && !format.encoding;
+                            }
+                        })
+                        // Write audio to file since ffmpeg supports only one input stream.
+                            .pipe(fs.createWriteStream(audioOutput))
+                            .on('finish', () => {
+                                ffmpeg()
+                                    .input(ytdl.downloadFromInfo(req.session.gInfo, {
+                                        filter: format => {
+                                            return format.container === 'mp4' && !format.audioEncoding;
+                                        }
+                                    }))
+                                    .videoCodec('copy')
+                                    .input(audioOutput)
+                                    .audioCodec('copy')
+                                    .save(mainOutput)
+                                    .on('error', console.error)
+                                    .on('progress', progress => {
+                                    }).on('end', () => {
+
+                                    var data = fs.readFileSync(mainOutput);
+                                    let filename = cleanString(req.session.gFilename);
+                                    res.header('Content-Disposition', `attachment; filename="${filename}.mp4"`);
+                                    res.end(data, "utf-8");
+
+                                    fs.unlink(audioOutput, err => {
+                                        if (err) console.error(err);
+                                        else console.log('\nfinished downloading');
+                                    });
+                                });
+                            });
+                    }
+                } else {
+                    logger.error('No URL was defined');
+
+                    var message = "Please follow the how to instructions!";
+                    sendData(400, res, message); // send message and all data
+                }
             }
-
-
-        } else {
-            logger.error('No URL was defined');
-
-            var message = "Please follow the how to instructions!";
-            sendData(400, res, message); // send message and all data
         }
-    });
+    );
+
 }
 //# sourceMappingURL=server.js.map
